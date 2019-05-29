@@ -19,6 +19,7 @@ package swurg.ui;
 import static burp.BurpExtender.COPYRIGHT;
 import static burp.BurpExtender.EXTENSION;
 
+import burp.BurpExtender;
 import burp.HttpRequestResponse;
 import burp.IBurpExtenderCallbacks;
 import burp.ITab;
@@ -40,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,11 @@ import swurg.process.Loader;
 import swurg.utils.ExtensionHelper;
 
 public class Tab implements ITab {
+  public static BurpExtender burp = BurpExtender.getInstance();
+  private IBurpExtenderCallbacks callbacks = burp.getCallbacks();
+
+  PrintWriter stdout = new PrintWriter(callbacks.getStdout(), true);
+  PrintWriter stderr = new PrintWriter(callbacks.getStderr(), true);
 
   private final ContextMenu contextMenu;
   private ExtensionHelper extensionHelper;
@@ -249,6 +256,13 @@ public class Tab implements ITab {
   public void populateTable(Swagger swagger) {
     DefaultTableModel defaultTableModel = (DefaultTableModel) this.table.getModel();
     List<Scheme> schemes = swagger.getSchemes();
+    stdout.println("onche");
+
+    if(schemes == null){
+      schemes = new ArrayList<Scheme>();
+      schemes.add(Scheme.forValue("HTTPS"));
+      swagger.setSchemes(schemes);
+    }
 
     for (Scheme scheme : schemes) {
       for (Map.Entry<String, Path> path : swagger.getPaths().entrySet()) {
@@ -320,7 +334,7 @@ public class Tab implements ITab {
 
         try {
           Swagger swagger = new Loader().process(resource);
-          populateTable(swagger);
+          populateTable(swagger); 
           printStatus(COPYRIGHT, Color.BLACK);
         } catch (Exception e1) {
           printStatus(e1.getMessage(), Color.RED);

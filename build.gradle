@@ -18,11 +18,12 @@ dependencies {
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
 }
 
-test {
-    testLogging.showStandardStreams = true   
-}
+
 
 task fatJar(type: Jar) {
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
