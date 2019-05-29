@@ -58,19 +58,21 @@ public class Loader {
   }
 
   private void validateSpecification(Swagger swagger, String resource) {
-    if (Strings.isNullOrEmpty(swagger.getHost())) {
-      throw new IllegalArgumentException(
-          String.format(
-              "The OpenAPI specification contained in %s is missing the mandatory field: 'host'",
-              resource));
-    }
+    // As discussed in https://github.com/AresS31/swurg/issues/56, the host and schemes are not even supported in 3.0.2 OpenAPI definitions
+    // Therefore, the code here is commented out, left for tracability
+    // if (Strings.isNullOrEmpty(swagger.getHost())) {
+    //   throw new IllegalArgumentException(
+    //       String.format(
+    //           "The OpenAPI specification contained in %s is missing the mandatory field: 'host'",
+    //           resource));
+    // }
 
-    if (CollectionUtils.isEmpty(swagger.getSchemes())) {
-      throw new IllegalArgumentException(
-          String.format(
-              "The OpenAPI specification contained in %s is missing the mandatory field: 'schemes'",
-              resource));
-    }
+    // if (CollectionUtils.isEmpty(swagger.getSchemes())) {
+    //   throw new IllegalArgumentException(
+    //       String.format(
+    //           "The OpenAPI specification contained in %s is missing the mandatory field: 'schemes'",
+    //           resource));
+    // }
 
     if (MapUtils.isEmpty(swagger.getPaths())) {
       throw new IllegalArgumentException(
