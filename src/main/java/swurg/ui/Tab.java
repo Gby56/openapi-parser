@@ -256,7 +256,6 @@ public class Tab implements ITab {
   public void populateTable(Swagger swagger) {
     DefaultTableModel defaultTableModel = (DefaultTableModel) this.table.getModel();
     List<Scheme> schemes = swagger.getSchemes();
-    stdout.println("onche");
 
     if(schemes == null){
       schemes = new ArrayList<Scheme>();

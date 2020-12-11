@@ -87,6 +87,11 @@ public class Loader {
               "The OpenAPI specification contained in %s is missing the mandatory field: 'paths'",
               resource));
     }
+
+    if (swagger.getBasePath().equals("/")){
+      swagger.setBasePath("");
+      stdout.println(String.format("Correcting basepath / to empty paths to avoid double // in URLs", resource));
+    }
   }
 
 }
